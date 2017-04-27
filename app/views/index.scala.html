@@ -1,0 +1,46 @@
+@(govForm: Form[(String,String,String,String)])
+
+@import helper._
+@import play.api.Play.current
+@import play.api.i18n.Messages.Implicits._
+
+@main(title = "Some Useful Government Service") {
+
+    <h1>Some Useful Government Service</h1>
+
+    @form(action = routes.ApplicationController.Apply, args = 'id -> "govform") {
+
+        @inputText(
+            field = govForm("name"),
+            args = '_label -> "Name", 'placeholder -> "your name"
+        )
+
+        @inputRadioGroup(
+        govForm("gender"),
+        options = Seq("M"->"Male","F"->"Female"),
+        '_label -> "Gender",
+        '_error -> govForm("gender").
+        error.map(_.withMessage("select gender")))
+
+
+        @inputText(
+        field = govForm("age"),
+        args = '_label -> "Age", 'size -> 3, 'placeholder -> 10
+        )
+        @select(
+        field = govForm("country"),
+        options = options(
+        "" -> "Choose country",
+        "India" -> "India",
+        "England" -> "England",
+        "blue" -> "Blue"
+        ),
+        args = '_label -> "Choose a country"
+        )
+       <p class="buttons">
+            <input type="submit" id="Apply">
+        <p>
+
+    }
+
+}
