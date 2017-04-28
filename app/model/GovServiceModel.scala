@@ -7,7 +7,7 @@ import play.api.libs.json._
 
 case class GovServiceModel(name: String,sex : String,age: String , country: String)
 object GovServiceModel {
-  implicit val formats: Format[GovService] = Json.format[GovService]
+  implicit val format: Format[GovServiceModel] = Json.format[GovServiceModel]
 }
 
 
