@@ -10,5 +10,9 @@ libraryDependencies += jdbc
 libraryDependencies += cache
 libraryDependencies += ws
 libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "2.0.0" % Test
+libraryDependencies ++= Seq(
+  "org.reactivemongo" %% "play2-reactivemongo" % "0.11.14"
+)
+routesGenerator := InjectedRoutesGenerator
 
 

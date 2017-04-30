@@ -1,19 +1,18 @@
 package form
 
-import model.{GovServiceModel}
+import java.time.LocalDate
+
+import models.UserDataModel
 import play.api.data.Form
 import play.api.data.Forms._
 
-/**
-  * Created by NEBHA on 27/04/2017.
-  */
-object GovForm {
-  val govForm = Form(
+object UserDataForm {
+  val userDataForm = Form(
     mapping(
       "name" -> nonEmptyText,
       "gender" -> nonEmptyText,
       "age" -> nonEmptyText,
       "country" -> nonEmptyText
-    )(GovServiceModel.apply)(GovServiceModel.unapply)
+    )(UserDataModel.apply)(UserDataModel.unapply)
   )
 }

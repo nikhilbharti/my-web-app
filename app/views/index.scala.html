@@ -1,49 +1,49 @@
-@(govForm: Form[model.GovServiceModel])
+@(userDataForm: Form[models.UserDataModel])
 
 @import helper._
 @import play.api.Play.current
 @import play.api.i18n.Messages.Implicits._
-@import model._
+@import models._
 
 @main(title = "Some Useful Government Service") {
 
     <h1>Some Useful Government Service</h1>
 
-    @form(action = routes.ApplicationController.submit,args = 'id -> "govform") {
+    @form(action = routes.ApplicationController.submit,args = 'id -> "userDataform") {
 
         @inputText(
-            field = govForm("name"),
+            field = userDataForm("name"),
             args = '_label -> "Name",
-            '_error -> govForm("name").
+            '_error -> userDataForm("name").
             error.map(_.withMessage("Enter your name"))
         )
 
         @inputRadioGroup(
-            govForm("gender"),
+            userDataForm("gender"),
             options = Seq("M"->"Male","F"->"Female"),
             '_label -> "Gender",
-            '_error -> govForm("gender").
+            '_error -> userDataForm("gender").
             error.map(_.withMessage("select gender"))
         )
 
 
         @inputText(
-        field = govForm("age"),
+        field = userDataForm("age"),
         args = '_label -> "Age", 'size -> 3,
-        '_error -> govForm("age").
+        '_error -> userDataForm("age").
         error.map(_.withMessage("Enter your age"))
         )
 
         @select(
-        field = govForm("country"),
+        field = userDataForm("country"),
         options = options(
         "" -> "Choose country",
-        "India" -> "India",
         "England" -> "England",
-        "blue" -> "Blue"
+        "India" -> "India",
+        "US" -> "US"
         ),
-        args = '_label -> "Choose a country",
-        '_error -> govForm("age").
+        args = '_label -> "Country",
+        '_error -> userDataForm("age").
         error.map(_.withMessage("Select Country"))
         )
 
