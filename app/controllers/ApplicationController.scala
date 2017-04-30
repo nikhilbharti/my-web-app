@@ -4,6 +4,7 @@ import javax.inject._
 
 import form.UserDataForm._
 import models.UserDataModel
+import play.api.libs.json.Json
 import play.api.{Logger, db}
 import play.api.libs.ws.{WSClient, WSRequest, WSResponse}
 import play.api.mvc._
@@ -32,7 +33,7 @@ class ApplicationController @Inject() (ws: WSClient,val reactiveMongoApi: Reacti
   def collection: JSONCollection = db.collection[JSONCollection]("userdata")
 
   def index = Action.async {
-    //getListOfCountry
+    getListOfCountry
     Future.successful(Ok(views.html.index(userDataForm)))
   }
 
@@ -41,8 +42,13 @@ class ApplicationController @Inject() (ws: WSClient,val reactiveMongoApi: Reacti
     val complexRequest: WSRequest =
       request.withHeaders("Accept" -> "application/json")
         .withRequestTimeout(10000.millis)
-     request.get().map {
-     response => println(response)
+    complexRequest.get().map {
+     response => {
+  // List("Åland Islands", "Albania", "Andorra", "Austria", "Belarus", "Belgium", "Bosnia and Herzegovina", "Bulgaria", "Croatia", "Cyprus", "Czech Republic", "Denmark", "Estonia", "Faroe Islands", "Finland", "France", "Germany", "Gibraltar", "Greece", "Guernsey", "Holy See", "Hungary", "Iceland", "Republic of Ireland", "Isle of Man", "Italy", "Jersey", "Latvia", "Liechtenstein", "Lithuania", "Luxembourg", "Republic of Macedonia", "Malta", "Moldova", "Monaco", "Montenegro", "Netherlands", "Norway", "Poland", "Portugal", "Republic of Kosovo", "Romania", "Russia", "San Marino", "Serbia", "Slovakia", "Slovenia", "Spain", "Svalbard and Jan Mayen", "Sweden", "Switzerland", "Ukraine", "United Kingdom")
+
+       val listOfCountry = (response.json \\ "name").toList
+        println(listOfCountry)
+     }
    }
   }
 
