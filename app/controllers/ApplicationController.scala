@@ -33,24 +33,24 @@ class ApplicationController @Inject() (ws: WSClient,val reactiveMongoApi: Reacti
   def collection: JSONCollection = db.collection[JSONCollection]("userdata")
 
   def index = Action.async {
-    getListOfCountry
-    Future.successful(Ok(views.html.index(userDataForm)))
+    val countries = getListOfCountry.map(x => x -> x).toSeq
+    Future.successful(Ok(views.html.index(userDataForm,countries)))
   }
 
-  def getListOfCountry = {
+  def getListOfCountry : List[String] = {
     val request: WSRequest = ws.url(url)
     val complexRequest: WSRequest =
       request.withHeaders("Accept" -> "application/json")
         .withRequestTimeout(10000.millis)
-    complexRequest.get().map {
-     response => {
-  // List("Åland Islands", "Albania", "Andorra", "Austria", "Belarus", "Belgium", "Bosnia and Herzegovina", "Bulgaria", "Croatia", "Cyprus", "Czech Republic", "Denmark", "Estonia", "Faroe Islands", "Finland", "France", "Germany", "Gibraltar", "Greece", "Guernsey", "Holy See", "Hungary", "Iceland", "Republic of Ireland", "Isle of Man", "Italy", "Jersey", "Latvia", "Liechtenstein", "Lithuania", "Luxembourg", "Republic of Macedonia", "Malta", "Moldova", "Monaco", "Montenegro", "Netherlands", "Norway", "Poland", "Portugal", "Republic of Kosovo", "Romania", "Russia", "San Marino", "Serbia", "Slovakia", "Slovenia", "Spain", "Svalbard and Jan Mayen", "Sweden", "Switzerland", "Ukraine", "United Kingdom")
-
-       val listOfCountry = (response.json \\ "name").toList
-        println(listOfCountry)
-     }
-   }
-  }
+    val listOfCountry = complexRequest.get().map {
+      response => {
+        // List("Åland Islands", "Albania", "Andorra", "Austria", "Belarus", "Belgium", "Bosnia and Herzegovina", "Bulgaria", "Croatia", "Cyprus", "Czech Republic", "Denmark", "Estonia", "Faroe Islands", "Finland", "France", "Germany", "Gibraltar", "Greece", "Guernsey", "Holy See", "Hungary", "Iceland", "Republic of Ireland", "Isle of Man", "Italy", "Jersey", "Latvia", "Liechtenstein", "Lithuania", "Luxembourg", "Republic of Macedonia", "Malta", "Moldova", "Monaco", "Montenegro", "Netherlands", "Norway", "Poland", "Portugal", "Republic of Kosovo", "Romania", "Russia", "San Marino", "Serbia", "Slovakia", "Slovenia", "Spain", "Svalbard and Jan Mayen", "Sweden", "Switzerland", "Ukraine", "United Kingdom")
+        (response.json \\ "name").toList.map {
+          x => x.toString()
+        }
+      }
+    }
+ }
 
 def submit = Action.async  {
     implicit request =>

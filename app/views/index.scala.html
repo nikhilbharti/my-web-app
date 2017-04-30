@@ -1,4 +1,4 @@
-@(userDataForm: Form[models.UserDataModel])
+@(userDataForm: Form[models.UserDataModel], country : Seq[(String, String)])
 
 @import helper._
 @import play.api.Play.current
@@ -36,12 +36,7 @@
 
         @select(
         field = userDataForm("country"),
-        options = options(
-        "" -> "Choose country",
-        "England" -> "England",
-        "India" -> "India",
-        "US" -> "US"
-        ),
+        options = country,
         args = '_label -> "Country",
         '_error -> userDataForm("age").
         error.map(_.withMessage("Select Country"))
