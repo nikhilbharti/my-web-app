@@ -12,7 +12,8 @@ object UserDataForm {
       "name" -> nonEmptyText,
       "gender" -> nonEmptyText,
       "age" -> nonEmptyText,
-      "country" -> nonEmptyText
+      "country" -> nonEmptyText,
+      "dateCreated" -> ignored[String](UserDataModel.dateCreated)
     )(UserDataModel.apply)(UserDataModel.unapply)
   )
 }
