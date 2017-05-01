@@ -33,16 +33,19 @@ class ApplicationController @Inject() (ws: WSClient,val reactiveMongoApi: Reacti
   def collection: JSONCollection = db.collection[JSONCollection]("userdata")
 
   def index = Action.async {
-    val countries = getListOfCountry.map(x => x -> x).toSeq
-    Future.successful(Ok(views.html.index(userDataForm,countries)))
+    for {
+      countries <- countryList
+    } yield {
+         Ok(views.html.index(userDataForm,countries.map(x => x -> x)))
+    }
   }
 
-  def getListOfCountry : List[String] = {
+  def countryList : Future[List[String]]= {
     val request: WSRequest = ws.url(url)
     val complexRequest: WSRequest =
       request.withHeaders("Accept" -> "application/json")
         .withRequestTimeout(10000.millis)
-    val listOfCountry = complexRequest.get().map {
+     complexRequest.get().map {
       response => {
         // List("Åland Islands", "Albania", "Andorra", "Austria", "Belarus", "Belgium", "Bosnia and Herzegovina", "Bulgaria", "Croatia", "Cyprus", "Czech Republic", "Denmark", "Estonia", "Faroe Islands", "Finland", "France", "Germany", "Gibraltar", "Greece", "Guernsey", "Holy See", "Hungary", "Iceland", "Republic of Ireland", "Isle of Man", "Italy", "Jersey", "Latvia", "Liechtenstein", "Lithuania", "Luxembourg", "Republic of Macedonia", "Malta", "Moldova", "Monaco", "Montenegro", "Netherlands", "Norway", "Poland", "Portugal", "Republic of Kosovo", "Romania", "Russia", "San Marino", "Serbia", "Slovakia", "Slovenia", "Spain", "Svalbard and Jan Mayen", "Sweden", "Switzerland", "Ukraine", "United Kingdom")
         (response.json \\ "name").toList.map {
@@ -50,18 +53,16 @@ class ApplicationController @Inject() (ws: WSClient,val reactiveMongoApi: Reacti
         }
       }
     }
- }
+  }
 
 def submit = Action.async  {
     implicit request =>
       userDataForm.bindFromRequest.fold(
-        formWithErrors => Future.successful(BadRequest(views.html.index(formWithErrors))),
+        formWithErrors => Future.successful(BadRequest(views.html.index(formWithErrors,Seq(""->"")))),
         userData => {
           collection.insert(userData).map(_ => Ok)
          Future.successful(Ok(views.html.thankYou(userData.name)))
         }
       )
   }
-
-
 }
