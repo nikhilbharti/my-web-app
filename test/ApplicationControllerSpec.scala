@@ -7,7 +7,7 @@ import play.api.test.Helpers._
  * You can mock out a whole application including requests, plugins etc.
  * For more information, consult the wiki.
  */
-class ApplicationSpec extends PlaySpec with OneAppPerTest {
+class ApplicationControllerSpec extends PlaySpec with OneAppPerTest {
 
   "Routes" should {
 
@@ -17,7 +17,7 @@ class ApplicationSpec extends PlaySpec with OneAppPerTest {
 
   }
 
-  "HomeController" should {
+  "ApplicationController" should {
 
     "render the index page" in {
       val home = route(app, FakeRequest(GET, "/")).get
@@ -28,15 +28,4 @@ class ApplicationSpec extends PlaySpec with OneAppPerTest {
     }
 
   }
-
-  "CountController" should {
-
-    "return an increasing count" in {
-      contentAsString(route(app, FakeRequest(GET, "/count")).get) mustBe "0"
-      contentAsString(route(app, FakeRequest(GET, "/count")).get) mustBe "1"
-      contentAsString(route(app, FakeRequest(GET, "/count")).get) mustBe "2"
-    }
-
-  }
-
 }
