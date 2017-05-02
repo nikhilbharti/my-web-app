@@ -12,4 +12,4 @@ And then go to http://localhost:9000 to see the running web application.
 
 There are several demonstration files available in this template.
 
-## Create "nodetest" DB when running locally, to see if the data is saved in Colelction
+## Create "nodetest" DB when running locally, to see if the data is saved in Collection
