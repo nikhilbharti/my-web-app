@@ -7,46 +7,46 @@
 
 @main(title = "Some Useful Government Service") {
 
-    <h1>Some Useful Government Service</h1>
+<h1>Some Useful Government Service</h1>
 
-    @form(action = routes.ApplicationController.submit,args = 'id -> "userDataform") {
+@form(action = routes.ApplicationController.submit,args = 'id -> "userDataform") {
 
-        @inputText(
-            field = userDataForm("name"),
-            args = '_label -> "Name",
-            '_error -> userDataForm("name").
-            error.map(_.withMessage("Enter your name"))
-        )
+@inputText(
+field = userDataForm("name"),
+args = '_label -> "Name",
+'_error -> userDataForm("name").
+error.map(_.withMessage("Enter your name"))
+)
 
-        @inputRadioGroup(
-            userDataForm("gender"),
-            options = Seq("M"->"Male","F"->"Female"),
-            '_label -> "Gender",
-            '_error -> userDataForm("gender").
-            error.map(_.withMessage("select gender"))
-        )
-
-
-        @inputText(
-        field = userDataForm("age"),
-        args = '_label -> "Age", 'size -> 3,
-        '_error -> userDataForm("age").
-        error.map(_.withMessage("Enter your age"))
-        )
-
-        @select(
-        field = userDataForm("country"),
-        options = country,
-        args = '_label -> "Country",
-        '_error -> userDataForm("age").
-        error.map(_.withMessage("Select Country"))
-        )
+@inputRadioGroup(
+userDataForm("gender"),
+options = Seq("M"->"Male","F"->"Female"),
+'_label -> "Gender",
+'_error -> userDataForm("gender").
+error.map(_.withMessage("select gender"))
+)
 
 
-       <p class="buttons">
-           <input type="submit" id="submit" value="submit">
-       <p>
+@inputText(
+field = userDataForm("age"),
+args = '_label -> "Age", 'size -> 3,
+'_error -> userDataForm("age").
+error.map(_.withMessage("Enter your age"))
+)
+
+@select(
+field = userDataForm("country"),
+options = country,
+args = '_label -> "Country",
+'_error -> userDataForm("age").
+error.map(_.withMessage("Select Country"))
+)
+
+
+<p class="buttons">
+    <input type="submit" id="submit" value="submit">
+<p>
 
     }
 
-}
+    }
