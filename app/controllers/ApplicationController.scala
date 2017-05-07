@@ -23,11 +23,21 @@ class ApplicationController @Inject()(userDataService: UserDataService)(implicit
   def submit = Action.async {
     implicit request =>
       userDataForm.bindFromRequest.fold(
-        formWithErrors => Future.successful(BadRequest(views.html.index(formWithErrors, Seq("" -> "")))),
-        userData => {
+          formWithErrors => {
+            for {
+              countries <- userDataService.countryList()
+            } yield {
+              BadRequest(views.html.index(formWithErrors, countries.map(x => x -> x)))
+            }
+          },
+          userData => {
           userDataService.insertUserData(userData).map(_ => OK)
-          Future.successful(Ok(views.html.thankYou(userData.name)))
+          Future.successful(Redirect(routes.ApplicationController.thankYou(userData.name)))
         }
       )
+  }
+
+  def thankYou(name :String) = Action {
+    Ok(views.html.thankYou(name))
   }
 }

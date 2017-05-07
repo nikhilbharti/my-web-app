@@ -2,9 +2,10 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-GET     /                           controllers.ApplicationController.index
+GET      /                          controllers.ApplicationController.index
 
-POST     /thankYou                  controllers.ApplicationController.submit
+POST     /                           controllers.ApplicationController.submit
+GET      /thankYou                   controllers.ApplicationController.thankYou(name:String)
 
 
 
